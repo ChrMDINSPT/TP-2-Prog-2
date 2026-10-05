@@ -242,18 +242,18 @@ Whopper pedido:
 - [x] Employee
 - [x] UserType
 - [x] DailyRole
-- [ ] Order
-- [ ] OrderItem
-- [ ] OrderStatus
+- [x] Order
+- [x] OrderItem
+- [x] OrderStatus
 
 ## DTOs implementados
 
 - [x] CreateItemRequest
 - [x] CreateUserRequest
 - [x] ChangeRoleRequest
-- [ ] CreateOrderRequest
-- [ ] CreateOrderItemRequest
-- [ ] OrderResponse
+- [x] CreateOrderRequest
+- [x] CreateOrderItemRequest
+- [x] OrderResponse
 - [ ] SalesSummaryResponse
 
 ## Endpoints implementados
