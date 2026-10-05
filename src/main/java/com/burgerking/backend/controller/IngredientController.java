@@ -22,9 +22,30 @@ public class IngredientController {
         return ingredientService.getAllIngredients();
     }
 
+    @GetMapping("/{id}")
+        public Ingredient getIngredientById(@PathVariable Long id){
+            return ingredientService.getIngredientById(id);
+        }
+
     @PostMapping
     public Ingredient createIngredient(
         @RequestBody Ingredient ingredient) {
             return ingredientService.createIngredient(ingredient);
+    }
+
+    @PutMapping("/{id}")
+    public Ingredient updateIngredient(
+        @PathVariable Long id,
+        @RequestBody Ingredient ingredient) {
+            return ingredientService.updateIngredient(
+                id,
+                ingredient
+             );
+    }
+
+    @DeleteMapping("/{id}")
+        public void deleteIngredient(
+            @PathVariable Long id) {
+                ingredientService.deleteIngredient(id);
     }
 }
