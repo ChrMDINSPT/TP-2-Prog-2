@@ -358,21 +358,22 @@ Estado:
 
 ### Etapa 4 - Pedidos
 
-- [ ] Crear `OrderStatus`.
-- [ ] Crear entity `Order`.
-- [ ] Crear entity `OrderItem`.
-- [ ] Crear repositories.
-- [ ] Crear DTOs de creación.
-- [ ] Crear `OrderService`.
-- [ ] Crear `OrderController`.
-- [ ] Crear pedido.
-- [ ] Agregar ítems.
-- [ ] Personalizar ingredientes.
-- [ ] Asignar cocinero.
-- [ ] Iniciar preparación.
-- [ ] Marcar pedido como listo.
-- [ ] Entregar pedido.
-- [ ] Cancelar pedido.
+- [x] Crear `OrderStatus`.
+- [x] Crear entity `Order`.
+- [x] Crear entity `OrderItem`.
+- [x] Crear repositories.
+- [x] Crear DTOs de creación.
+- [x] Crear `OrderService`.
+- [x] Crear `OrderController`.
+- [x] Crear pedido.
+- [x] Agregar ítems.
+- [x] Personalizar ingredientes.
+- [x] Asignar cocinero.
+- [x] Iniciar preparación.
+- [x] Marcar pedido como listo.
+- [x] Entregar pedido.
+- [x] Cancelar pedido.
+- [ ] Testear Flow.
 
 Endpoints previstos:
 
