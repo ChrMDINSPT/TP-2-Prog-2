@@ -1,11 +1,13 @@
 package com.burgerking.backend.controller;
 
 import com.burgerking.backend.dto.CreateUserRequest;
+import com.burgerking.backend.dto.UpdateUserRequest;
 import com.burgerking.backend.entity.User;
 import com.burgerking.backend.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -32,7 +34,7 @@ public class UserController {
 
     @PostMapping
     public User createUser(
-            @RequestBody CreateUserRequest request) {
+            @Valid @RequestBody CreateUserRequest request) {
 
         return userService.createUser(request);
     }
@@ -40,12 +42,11 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(
             @PathVariable Long id,
-            @RequestBody CreateUserRequest request) {
+            @Valid @RequestBody UpdateUserRequest request) {
 
         return userService.updateUser(
                 id,
-                request
-        );
+                request);
     }
 
     @DeleteMapping("/{id}")

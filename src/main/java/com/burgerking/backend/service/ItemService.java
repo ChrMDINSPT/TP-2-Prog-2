@@ -3,6 +3,8 @@ package com.burgerking.backend.service;
 import com.burgerking.backend.dto.CreateItemRequest;
 import com.burgerking.backend.entity.Ingredient;
 import com.burgerking.backend.entity.Item;
+import com.burgerking.backend.exception.BusinessRuleException;
+import com.burgerking.backend.exception.ResourceNotFoundException;
 import com.burgerking.backend.repository.IngredientRepository;
 import com.burgerking.backend.repository.ItemRepository;
 import org.springframework.stereotype.Service;
@@ -32,16 +34,23 @@ public class ItemService {
         return itemRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Item no encontrado")
+                        new ResourceNotFoundException("Item no encontrado")
                 );
     }
 
     public Item createItem(CreateItemRequest request) {
 
         if (request.getPrice() == null
-                || request.getPrice().signum() < 0) {
-            throw new RuntimeException(
-                    "El precio no puede ser negativo"
+                || request.getPrice().signum() <= 0) {
+            throw new BusinessRuleException(
+                    "El precio debe ser mayor a 0"
+            );
+        }
+
+        if (request.getIngredientIds() == null
+                || request.getIngredientIds().stream().anyMatch(ingredientId -> ingredientId == null)) {
+            throw new BusinessRuleException(
+                    "Los ingredientes son obligatorios y sus IDs no pueden ser nulos"
             );
         }
 
@@ -53,7 +62,7 @@ public class ItemService {
         if (ingredients.size()
                 != request.getIngredientIds().size()) {
 
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "Uno o mas ingredientes no existen"
             );
         }
@@ -77,9 +86,16 @@ public class ItemService {
         Item item = getItemById(id);
 
         if (request.getPrice() == null
-                || request.getPrice().signum() < 0) {
-            throw new RuntimeException(
-                    "El precio no puede ser negativo"
+                || request.getPrice().signum() <= 0) {
+            throw new BusinessRuleException(
+                    "El precio debe ser mayor a 0"
+            );
+        }
+
+        if (request.getIngredientIds() == null
+                || request.getIngredientIds().stream().anyMatch(ingredientId -> ingredientId == null)) {
+            throw new BusinessRuleException(
+                    "Los ingredientes son obligatorios y sus IDs no pueden ser nulos"
             );
         }
 
@@ -91,7 +107,7 @@ public class ItemService {
         if (ingredients.size()
                 != request.getIngredientIds().size()) {
 
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "Uno o mas ingredientes no existen"
             );
         }

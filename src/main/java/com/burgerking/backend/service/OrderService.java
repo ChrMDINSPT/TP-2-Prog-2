@@ -2,6 +2,9 @@ package com.burgerking.backend.service;
 
 import com.burgerking.backend.dto.*;
 import com.burgerking.backend.entity.*;
+import com.burgerking.backend.exception.BusinessRuleException;
+import com.burgerking.backend.exception.ConflictException;
+import com.burgerking.backend.exception.ResourceNotFoundException;
 import com.burgerking.backend.repository.EmployeeRepository;
 import com.burgerking.backend.repository.IngredientRepository;
 import com.burgerking.backend.repository.ItemRepository;
@@ -55,19 +58,19 @@ public class OrderService {
 
         Employee seller = employeeRepository
                 .findById(request.getSellerId())
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Vendedor no encontrado"));
 
         if (seller.getDailyRole() != DailyRole.SELLER) {
 
-            throw new RuntimeException(
+            throw new BusinessRuleException(
                     "El empleado no tiene rol de vendedor");
         }
 
         if (request.getItems() == null
                 || request.getItems().isEmpty()) {
 
-            throw new RuntimeException(
+            throw new BusinessRuleException(
                     "El pedido debe tener al menos un item");
         }
 
@@ -78,13 +81,19 @@ public class OrderService {
 
         for (CreateOrderItemRequest requestedItem : request.getItems()) {
 
+            if (requestedItem == null
+                    || requestedItem.getItemId() == null) {
+                throw new BusinessRuleException(
+                        "El item del pedido es obligatorio");
+            }
+
             Item menuItem = itemRepository
                     .findById(requestedItem.getItemId())
-                    .orElseThrow(() -> new RuntimeException(
+                    .orElseThrow(() -> new ResourceNotFoundException(
                             "Item no encontrado"));
 
             if (!menuItem.isActive()) {
-                throw new RuntimeException(
+                throw new BusinessRuleException(
                         "El item no esta activo");
             }
 
@@ -97,6 +106,11 @@ public class OrderService {
                             requestedItem
                                     .getRemovedIngredientIds());
 
+            if (removedIds.stream().anyMatch(id -> id == null)) {
+                throw new BusinessRuleException(
+                        "Los IDs de ingredientes no pueden ser nulos");
+            }
+
             Set<Long> baseIngredientIds = menuItem.getIngredients()
                     .stream()
                     .map(Ingredient::getId)
@@ -105,7 +119,7 @@ public class OrderService {
 
             for (Long removedId : removedIds) {
                 if (!baseIngredientIds.contains(removedId)) {
-                    throw new RuntimeException(
+                    throw new ConflictException(
                             "Se intento quitar un ingrediente "
                                     + "que el item no posee");
                 }
@@ -121,6 +135,11 @@ public class OrderService {
                             requestedItem
                                     .getAddedIngredientIds());
 
+            if (addedIds.stream().anyMatch(id -> id == null)) {
+                throw new BusinessRuleException(
+                        "Los IDs de ingredientes no pueden ser nulos");
+            }
+
             if (!addedIds.isEmpty()) {
 
                 List<Ingredient> extras = ingredientRepository
@@ -128,7 +147,7 @@ public class OrderService {
 
                 if (extras.size() != addedIds.size()) {
 
-                    throw new RuntimeException(
+                    throw new ResourceNotFoundException(
                             "Uno o mas ingredientes "
                                     + "agregados no existen");
                 }
@@ -165,24 +184,24 @@ public class OrderService {
 
         if (order.getStatus() != OrderStatus.RECEIVED) {
 
-            throw new RuntimeException(
+            throw new ConflictException(
                     "El pedido no esta disponible "
                             + "para asignacion");
         }
 
         if (order.getCook() != null) {
-            throw new RuntimeException(
+            throw new ConflictException(
                     "El pedido ya tiene cocinero");
         }
 
         Employee cook = employeeRepository
                 .findById(cookId)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Cocinero no encontrado"));
 
         if (cook.getDailyRole() != DailyRole.COOK) {
 
-            throw new RuntimeException(
+            throw new BusinessRuleException(
                     "El empleado no tiene rol de cocinero");
         }
 
@@ -199,13 +218,13 @@ public class OrderService {
 
         if (order.getStatus() != OrderStatus.RECEIVED) {
 
-            throw new RuntimeException(
+            throw new ConflictException(
                     "El pedido no puede comenzar "
                             + "a prepararse");
         }
 
         if (order.getCook() == null) {
-            throw new RuntimeException(
+            throw new ConflictException(
                     "El pedido no tiene cocinero asignado");
         }
 
@@ -223,7 +242,7 @@ public class OrderService {
 
         if (order.getStatus() != OrderStatus.IN_PREPARATION) {
 
-            throw new RuntimeException(
+            throw new ConflictException(
                     "El pedido no esta en preparacion");
         }
 
@@ -240,7 +259,7 @@ public class OrderService {
 
         if (order.getStatus() != OrderStatus.READY) {
 
-            throw new RuntimeException(
+            throw new ConflictException(
                     "El pedido no esta listo");
         }
 
@@ -262,7 +281,7 @@ public class OrderService {
         if (order.getStatus() == OrderStatus.DELIVERED
                 || order.getStatus() == OrderStatus.CANCELLED) {
 
-            throw new RuntimeException(
+            throw new ConflictException(
                     "El pedido no puede cancelarse");
         }
 
@@ -276,7 +295,7 @@ public class OrderService {
     private Order getOrderEntity(Long id) {
         return orderRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Pedido no encontrado"));
     }
 

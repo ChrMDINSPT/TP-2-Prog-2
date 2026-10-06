@@ -1,10 +1,13 @@
 package com.burgerking.backend.service;
 
 import com.burgerking.backend.dto.CreateUserRequest;
+import com.burgerking.backend.dto.UpdateUserRequest;
 import com.burgerking.backend.entity.DailyRole;
 import com.burgerking.backend.entity.Employee;
 import com.burgerking.backend.entity.User;
 import com.burgerking.backend.entity.UserType;
+import com.burgerking.backend.exception.ConflictException;
+import com.burgerking.backend.exception.ResourceNotFoundException;
 import com.burgerking.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +32,7 @@ public class UserService {
         return userRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Usuario no encontrado"
                         )
                 );
@@ -42,7 +45,7 @@ public class UserService {
         if (userRepository.existsByExternalSubject(
                 request.getExternalSubject())) {
 
-            throw new RuntimeException(
+            throw new ConflictException(
                     "El usuario ya existe"
             );
         }
@@ -74,7 +77,7 @@ public class UserService {
 
     public User updateUser(
             Long id,
-            CreateUserRequest request) {
+            UpdateUserRequest request) {
 
         User user = getUserById(id);
 
@@ -86,7 +89,7 @@ public class UserService {
     public void deleteUser(Long id) {
 
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "Usuario no encontrado"
             );
         }

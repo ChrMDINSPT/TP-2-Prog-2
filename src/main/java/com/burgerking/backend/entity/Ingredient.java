@@ -1,6 +1,7 @@
 package com.burgerking.backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "ingredients")
@@ -11,6 +12,7 @@ public class Ingredient {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
 
     public Ingredient() {

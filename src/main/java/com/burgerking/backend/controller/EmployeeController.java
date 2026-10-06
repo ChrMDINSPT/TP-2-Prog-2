@@ -7,6 +7,7 @@ import com.burgerking.backend.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -17,8 +18,7 @@ public class EmployeeController {
     public EmployeeController(
             EmployeeService employeeService) {
 
-        this.employeeService =
-                employeeService;
+        this.employeeService = employeeService;
     }
 
     @GetMapping
@@ -45,11 +45,10 @@ public class EmployeeController {
     @PatchMapping("/{id}/role")
     public Employee changeRole(
             @PathVariable Long id,
-            @RequestBody ChangeRoleRequest request) {
+            @Valid @RequestBody ChangeRoleRequest request) {
 
         return employeeService.changeDailyRole(
                 id,
-                request.getRole()
-        );
+                request.getRole());
     }
 }

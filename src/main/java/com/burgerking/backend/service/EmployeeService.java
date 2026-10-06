@@ -2,6 +2,7 @@ package com.burgerking.backend.service;
 
 import com.burgerking.backend.entity.DailyRole;
 import com.burgerking.backend.entity.Employee;
+import com.burgerking.backend.exception.ResourceNotFoundException;
 import com.burgerking.backend.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class EmployeeService {
     public Employee getEmployeeById(Long id) {
         return employeeRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Empleado no encontrado"));
     }
 

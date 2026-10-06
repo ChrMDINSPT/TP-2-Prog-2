@@ -1,11 +1,16 @@
 package com.burgerking.backend.dto;
 
 import com.burgerking.backend.entity.UserType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class CreateUserRequest {
 
+    @NotBlank(message = "El subject externo no puede estar vacío")
     private String externalSubject;
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
+    @NotNull(message = "El tipo de usuario es obligatorio")
     private UserType userType;
 
     public CreateUserRequest() {
