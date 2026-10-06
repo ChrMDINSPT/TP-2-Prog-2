@@ -1,11 +1,11 @@
 package com.burgerking.backend.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class AssignCookRequest {
 
+    @NotNull(message = "El cocinero es obligatorio")
     private Long cookId;
-
-    public AssignCookRequest() {
-    }
 
     public Long getCookId() {
         return cookId;

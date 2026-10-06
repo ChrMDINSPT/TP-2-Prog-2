@@ -5,6 +5,7 @@ import com.burgerking.backend.service.IngredientService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/ingredients")
@@ -23,29 +24,28 @@ public class IngredientController {
     }
 
     @GetMapping("/{id}")
-        public Ingredient getIngredientById(@PathVariable Long id){
-            return ingredientService.getIngredientById(id);
-        }
+    public Ingredient getIngredientById(@PathVariable Long id) {
+        return ingredientService.getIngredientById(id);
+    }
 
     @PostMapping
     public Ingredient createIngredient(
-        @RequestBody Ingredient ingredient) {
-            return ingredientService.createIngredient(ingredient);
+            @Valid @RequestBody Ingredient ingredient) {
+        return ingredientService.createIngredient(ingredient);
     }
 
     @PutMapping("/{id}")
     public Ingredient updateIngredient(
-        @PathVariable Long id,
-        @RequestBody Ingredient ingredient) {
-            return ingredientService.updateIngredient(
+            @PathVariable Long id,
+            @Valid @RequestBody Ingredient ingredient) {
+        return ingredientService.updateIngredient(
                 id,
-                ingredient
-             );
+                ingredient);
     }
 
     @DeleteMapping("/{id}")
-        public void deleteIngredient(
+    public void deleteIngredient(
             @PathVariable Long id) {
-                ingredientService.deleteIngredient(id);
+        ingredientService.deleteIngredient(id);
     }
 }

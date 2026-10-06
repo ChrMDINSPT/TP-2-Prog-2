@@ -1,6 +1,7 @@
 package com.burgerking.backend.service;
 
 import com.burgerking.backend.entity.Ingredient;
+import com.burgerking.backend.exception.ResourceNotFoundException;
 import com.burgerking.backend.repository.IngredientRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class IngredientService {
         return ingredientRepository
                 .findById(id)
                 .orElseThrow(() ->
-                    new RuntimeException("Ingrediente no encontrado")
+                    new ResourceNotFoundException("Ingrediente no encontrado")
                 );
     }
 
@@ -35,7 +36,7 @@ public class IngredientService {
         Ingredient ingredient = ingredientRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                             "Ingrediente no encontrado"
                         )
                 );
@@ -49,7 +50,7 @@ public class IngredientService {
 
     public void deleteIngredient(Long id) {
         if (!ingredientRepository.existsById(id)) {
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "Ingrediente no encontrado"
             );
         }

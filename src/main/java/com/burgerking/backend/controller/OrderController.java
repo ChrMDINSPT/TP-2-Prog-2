@@ -4,9 +4,13 @@ import com.burgerking.backend.dto.AssignCookRequest;
 import com.burgerking.backend.dto.CreateOrderRequest;
 import com.burgerking.backend.dto.OrderResponse;
 import com.burgerking.backend.service.OrderService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -34,7 +38,7 @@ public class OrderController {
 
   @PostMapping
   public OrderResponse createOrder(
-      @RequestBody CreateOrderRequest request) {
+      @Valid @RequestBody CreateOrderRequest request) {
 
     return orderService.createOrder(request);
   }
@@ -42,12 +46,11 @@ public class OrderController {
   @PatchMapping("/{id}/assign-cook")
   public OrderResponse assignCook(
       @PathVariable Long id,
-      @RequestBody AssignCookRequest request) {
+      @Valid @RequestBody AssignCookRequest request) {
 
     return orderService.assignCook(
         id,
-        request.getCookId()
-    );
+        request.getCookId());
   }
 
   @PatchMapping("/{id}/start")

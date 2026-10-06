@@ -1,17 +1,17 @@
 package com.burgerking.backend.dto;
 
-import java.util.List;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.Set;
 
 public class CreateOrderItemRequest {
 
+    @NotNull(message = "El item es obligatorio")
     private Long itemId;
 
-    private List<Long> removedIngredientIds;
+    private Set<Long> removedIngredientIds;
 
-    private List<Long> addedIngredientIds;
-
-    public CreateOrderItemRequest() {
-    }
+    private Set<Long> addedIngredientIds;
 
     public Long getItemId() {
         return itemId;
@@ -21,23 +21,19 @@ public class CreateOrderItemRequest {
         this.itemId = itemId;
     }
 
-    public List<Long> getRemovedIngredientIds() {
+    public Set<Long> getRemovedIngredientIds() {
         return removedIngredientIds;
     }
 
-    public void setRemovedIngredientIds(
-            List<Long> removedIngredientIds) {
-
+    public void setRemovedIngredientIds(Set<Long> removedIngredientIds) {
         this.removedIngredientIds = removedIngredientIds;
     }
 
-    public List<Long> getAddedIngredientIds() {
+    public Set<Long> getAddedIngredientIds() {
         return addedIngredientIds;
     }
 
-    public void setAddedIngredientIds(
-            List<Long> addedIngredientIds) {
-
+    public void setAddedIngredientIds(Set<Long> addedIngredientIds) {
         this.addedIngredientIds = addedIngredientIds;
     }
 }

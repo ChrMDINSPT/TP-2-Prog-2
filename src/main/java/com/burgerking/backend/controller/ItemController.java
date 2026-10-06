@@ -6,6 +6,7 @@ import com.burgerking.backend.service.ItemService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/items")
@@ -29,7 +30,7 @@ public class ItemController {
 
     @PostMapping
     public Item createItem(
-            @RequestBody CreateItemRequest request) {
+            @Valid @RequestBody CreateItemRequest request) {
 
         return itemService.createItem(request);
     }
@@ -37,7 +38,7 @@ public class ItemController {
     @PutMapping("/{id}")
     public Item updateItem(
             @PathVariable Long id,
-            @RequestBody CreateItemRequest request) {
+            @Valid @RequestBody CreateItemRequest request) {
 
         return itemService.updateItem(id, request);
     }

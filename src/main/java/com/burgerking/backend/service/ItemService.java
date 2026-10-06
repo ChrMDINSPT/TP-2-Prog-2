@@ -32,7 +32,7 @@ public class ItemService {
         return itemRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Item no encontrado")
+                        new ResourceNotFoundException("Item no encontrado")
                 );
     }
 
@@ -40,7 +40,7 @@ public class ItemService {
 
         if (request.getPrice() == null
                 || request.getPrice().signum() < 0) {
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "El precio no puede ser negativo"
             );
         }
@@ -53,7 +53,7 @@ public class ItemService {
         if (ingredients.size()
                 != request.getIngredientIds().size()) {
 
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "Uno o mas ingredientes no existen"
             );
         }
@@ -78,7 +78,7 @@ public class ItemService {
 
         if (request.getPrice() == null
                 || request.getPrice().signum() < 0) {
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "El precio no puede ser negativo"
             );
         }
@@ -91,7 +91,7 @@ public class ItemService {
         if (ingredients.size()
                 != request.getIngredientIds().size()) {
 
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "Uno o mas ingredientes no existen"
             );
         }

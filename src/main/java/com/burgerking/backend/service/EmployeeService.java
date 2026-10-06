@@ -25,7 +25,7 @@ public class EmployeeService {
     public Employee getEmployeeById(Long id) {
         return employeeRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Empleado no encontrado"));
     }
 

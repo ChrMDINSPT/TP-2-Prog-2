@@ -29,7 +29,7 @@ public class UserService {
         return userRepository
                 .findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ResourceNotFoundException(
                                 "Usuario no encontrado"
                         )
                 );
@@ -42,7 +42,7 @@ public class UserService {
         if (userRepository.existsByExternalSubject(
                 request.getExternalSubject())) {
 
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "El usuario ya existe"
             );
         }
@@ -86,7 +86,7 @@ public class UserService {
     public void deleteUser(Long id) {
 
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException(
+            throw new ResourceNotFoundException(
                     "Usuario no encontrado"
             );
         }
