@@ -9,9 +9,9 @@ public class CreateOrderItemRequest {
     @NotNull(message = "El item es obligatorio")
     private Long itemId;
 
-    private Set<Long> removedIngredientIds;
+    private Set<@NotNull(message = "El ID del ingrediente es obligatorio") Long> removedIngredientIds;
 
-    private Set<Long> addedIngredientIds;
+    private Set<@NotNull(message = "El ID del ingrediente es obligatorio") Long> addedIngredientIds;
 
     public Long getItemId() {
         return itemId;

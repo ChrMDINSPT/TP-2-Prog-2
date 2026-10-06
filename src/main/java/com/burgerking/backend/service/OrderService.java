@@ -4,6 +4,7 @@ import com.burgerking.backend.dto.*;
 import com.burgerking.backend.entity.*;
 import com.burgerking.backend.exception.BusinessRuleException;
 import com.burgerking.backend.exception.ConflictException;
+import com.burgerking.backend.exception.ResourceNotFoundException;
 import com.burgerking.backend.repository.EmployeeRepository;
 import com.burgerking.backend.repository.IngredientRepository;
 import com.burgerking.backend.repository.ItemRepository;
@@ -69,7 +70,7 @@ public class OrderService {
         if (request.getItems() == null
                 || request.getItems().isEmpty()) {
 
-            throw new ResourceNotFoundException(
+            throw new BusinessRuleException(
                     "El pedido debe tener al menos un item");
         }
 
@@ -79,6 +80,12 @@ public class OrderService {
         order.setStatus(OrderStatus.RECEIVED);
 
         for (CreateOrderItemRequest requestedItem : request.getItems()) {
+
+            if (requestedItem == null
+                    || requestedItem.getItemId() == null) {
+                throw new BusinessRuleException(
+                        "El item del pedido es obligatorio");
+            }
 
             Item menuItem = itemRepository
                     .findById(requestedItem.getItemId())
@@ -98,6 +105,11 @@ public class OrderService {
                     : new HashSet<>(
                             requestedItem
                                     .getRemovedIngredientIds());
+
+            if (removedIds.stream().anyMatch(id -> id == null)) {
+                throw new BusinessRuleException(
+                        "Los IDs de ingredientes no pueden ser nulos");
+            }
 
             Set<Long> baseIngredientIds = menuItem.getIngredients()
                     .stream()
@@ -123,6 +135,11 @@ public class OrderService {
                             requestedItem
                                     .getAddedIngredientIds());
 
+            if (addedIds.stream().anyMatch(id -> id == null)) {
+                throw new BusinessRuleException(
+                        "Los IDs de ingredientes no pueden ser nulos");
+            }
+
             if (!addedIds.isEmpty()) {
 
                 List<Ingredient> extras = ingredientRepository
@@ -130,7 +147,7 @@ public class OrderService {
 
                 if (extras.size() != addedIds.size()) {
 
-                    throw new ConflictException(
+                    throw new ResourceNotFoundException(
                             "Uno o mas ingredientes "
                                     + "agregados no existen");
                 }
@@ -225,7 +242,7 @@ public class OrderService {
 
         if (order.getStatus() != OrderStatus.IN_PREPARATION) {
 
-            throw new BusinessRuleException(
+            throw new ConflictException(
                     "El pedido no esta en preparacion");
         }
 
@@ -242,7 +259,7 @@ public class OrderService {
 
         if (order.getStatus() != OrderStatus.READY) {
 
-            throw new BusinessRuleException(
+            throw new ConflictException(
                     "El pedido no esta listo");
         }
 

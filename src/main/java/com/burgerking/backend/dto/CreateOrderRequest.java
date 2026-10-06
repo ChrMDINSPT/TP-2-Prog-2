@@ -12,8 +12,7 @@ public class CreateOrderRequest {
     private Long sellerId;
 
     @NotEmpty(message = "El pedido debe tener al menos un item")
-    @Valid
-    private List<CreateOrderItemRequest> items;
+    private List<@NotNull(message = "El item del pedido es obligatorio") @Valid CreateOrderItemRequest> items;
 
     public Long getSellerId() {
         return sellerId;

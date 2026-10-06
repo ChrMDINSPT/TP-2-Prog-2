@@ -16,7 +16,8 @@ public class CreateItemRequest {
     @Positive(message = "El precio debe ser mayor a 0")
     private BigDecimal price;
 
-    private Set<Long> ingredientIds;
+    @NotNull(message = "Los ingredientes son obligatorios")
+    private Set<@NotNull(message = "El ID del ingrediente es obligatorio") Long> ingredientIds;
 
     public String getName() {
         return name;

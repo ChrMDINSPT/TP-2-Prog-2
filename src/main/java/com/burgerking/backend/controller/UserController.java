@@ -1,6 +1,7 @@
 package com.burgerking.backend.controller;
 
 import com.burgerking.backend.dto.CreateUserRequest;
+import com.burgerking.backend.dto.UpdateUserRequest;
 import com.burgerking.backend.entity.User;
 import com.burgerking.backend.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(
             @PathVariable Long id,
-            @Valid @RequestBody CreateUserRequest request) {
+            @Valid @RequestBody UpdateUserRequest request) {
 
         return userService.updateUser(
                 id,
